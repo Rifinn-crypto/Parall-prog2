@@ -1,0 +1,6 @@
+﻿  lab2.cpp
+C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\lab2\lab2\lab2.cpp(64,31): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\lab2\lab2\lab2.cpp(65,34): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\lab2\lab2\lab2.cpp(66,31): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\lab2\lab2\lab2.cpp(67,34): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  lab2.vcxproj -> C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\lab2\x64\Debug\lab2.exe
