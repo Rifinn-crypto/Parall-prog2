@@ -4,6 +4,7 @@
 #include <chrono>
 #include <random>
 #include <stdexcept>
+#include <omp.h>
 
 // Функция для генерации случайной матрицы
 std::vector<std::vector<int>> generateRandomMatrix(int rows, int cols) {
@@ -63,19 +64,16 @@ void writeMatrix(const std::vector<std::vector<int>>& matrix, const std::string&
 std::vector<std::vector<int>> multiplyMatricesFromFile(const std::string& file1, const std::string& file2) {
     int rowsA, colsA, rowsB, colsB;
 
-    // Чтение первой матрицы из файла
     std::vector<std::vector<int>> matrix1 = readMatrix(file1, rowsA, colsA);
 
-    // Чтение второй матрицы из файла
     std::vector<std::vector<int>> matrix2 = readMatrix(file2, rowsB, colsB);
 
-    // Проверка совместимости размеров матриц
     if (colsA != rowsB) {
         throw std::runtime_error("Некорректные размеры матриц для умножения.");
     }
 
     std::vector<std::vector<int>> result(rowsA, std::vector<int>(colsB, 0));
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for num_threads(8)
     for (int i = 0; i < rowsA; ++i) {
         for (int j = 0; j < colsB; ++j) {
             for (int k = 0; k < colsA; ++k) {
@@ -83,44 +81,42 @@ std::vector<std::vector<int>> multiplyMatricesFromFile(const std::string& file1,
             }
         }
     }
-
     return result;
 }
 
-// Функция для расчета доверительного интервала на основе времени выполнения
+
+
 void calculateConfidenceInterval(const double& mean, const double& stdev, const int& numSamples) {
-    double z = 1.96; // Значение z-критерия для 95% доверительного интервала
+    double z = 1.96;
     double marginOfError = z * stdev / sqrt(numSamples);
 
     std::cout << "Confidence Interval for the Execution Time: [" << mean - marginOfError << ", " << mean + marginOfError << "]" << std::endl;
 }
 
-
-
 int main() {
-    const int rows1 = 10;
-    const int cols1 = 10;
-    const int rows2 = 10;
-    const int cols2 = 10;
+    std::cout << omp_get_max_threads() << std::endl;
+    const int rows1 = 2000;
+    const int cols1 = 2000;
+    const int rows2 = 2000;
+    const int cols2 = 2000;
     std::vector<std::vector<int>> matrix1 = generateRandomMatrix(rows1, cols1);
     std::vector<std::vector<int>> matrix2 = generateRandomMatrix(rows2, cols2);
 
-    writeMatrix(matrix1, "C:\\Users\\esh20\\OneDrive\\Рабочий стол\\HTML+MATH\\Uvarov-Nikita-6313-100503D-Lab2\\matrix1.txt");
-    writeMatrix(matrix2, "C:\\Users\\esh20\\OneDrive\\Рабочий стол\\HTML+MATH\\Uvarov-Nikita-6313-100503D-Lab2\\matrix2.txt");
+    writeMatrix(matrix1, "matrix1.txt");
+    writeMatrix(matrix2, "matrix2.txt");
 
     std::vector<std::vector<int>> result;
     auto start = std::chrono::high_resolution_clock::now();
-    result = multiplyMatricesFromFile("C:\\Users\\esh20\\OneDrive\\Рабочий стол\\HTML+MATH\\Uvarov-Nikita-6313-100503D-Lab2\\matrix1.txt", "C:\\Users\\esh20\\OneDrive\\Рабочий стол\\HTML+MATH\\Uvarov-Nikita-6313-100503D-Lab1\\ParallProg\\matrix2.txt");
+    result = multiplyMatricesFromFile("matrix1.txt", "matrix2.txt");
     auto end = std::chrono::high_resolution_clock::now();
-    writeMatrix(result, "C:\\Users\\esh20\\OneDrive\\Рабочий стол\\HTML+MATH\\Uvarov-Nikita-6313-100503D-Lab2\\result_matrix.txt");
+    writeMatrix(result, "result_matrix.txt");
 
     std::chrono::duration<double> duration = end - start;
     double meanTime = duration.count();
 
-    // Вычисление стандартного отклонения для доверительного интервала
-    double stdevTime = 0; // Для примера, здесь можно посчитать стандартное отклонение времени выполнения
+    double stdevTime = 0;
 
-    calculateConfidenceInterval(meanTime, stdevTime, 1); // 1 - количество измерений
+    calculateConfidenceInterval(meanTime, stdevTime, 1);
 
     std::cout << "The scope of the task: " << rows1 * cols1 + rows2 * cols2 << " elements." << std::endl;
     std::cout << "Execution time: " << meanTime << " seconds." << std::endl;

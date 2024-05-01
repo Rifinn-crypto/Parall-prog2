@@ -1,2 +1,3 @@
 ﻿  lab2.cpp
+C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\Parall-prog2\lab2\lab2\lab2.cpp(16,13): warning C4849: Предложение "collapse" OpenMP игнорируется в директиве "parallel for".
   lab2.vcxproj -> C:\Users\esh20\OneDrive\Рабочий стол\HTML+MATH\Uvarov-Nikita-6313-100503D-lab2\Parall-prog2\lab2\x64\Debug\lab2.exe
